@@ -7,7 +7,7 @@ import About from "./about";
 const Body = () => {
     return (
         <div>
-            <Menu />
+            
         </div>
     )
 }
