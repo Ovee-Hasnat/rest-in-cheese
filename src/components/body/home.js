@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Loading from "./loading";
 // import { connect } from 'react-redux';
 
 
@@ -9,6 +10,7 @@ class Home extends Component {
         return (
             <div>
                 <h1>This is HOME!</h1>
+                <Loading />
             </div>
         )
     }
