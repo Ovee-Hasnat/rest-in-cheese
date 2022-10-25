@@ -6,8 +6,8 @@ const LoadComments = (props) => {
             return (
                 <div key={comment.id}>
                     <em>{comment.comment}</em>
-                    <p style={{ textAlign: 'right' }}>{comment.author}</p>
-                    <p style={{ textAlign: 'right' }}>{comment.date}</p>
+                    <p style={{ textAlign: 'right', fontSize: '14px', margin: '1px' }}>{comment.author}</p>
+                    <p style={{ textAlign: 'right', fontSize: '14px' }}>{comment.date}</p>
                     <hr />
                 </div>
             );

@@ -1,6 +1,7 @@
-import React from "react";  
+import React from "react";
 
 const About = () => {
+    document.title = "RIC . About"
     return (
         <div>
 
