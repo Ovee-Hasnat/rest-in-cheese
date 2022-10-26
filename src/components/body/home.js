@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import Loading from "./loading";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCake } from "@fortawesome/free-solid-svg-icons";
 // import { connect } from 'react-redux';
 
 
@@ -10,7 +11,10 @@ class Home extends Component {
         return (
             <div>
                 <h1>This is HOME!</h1>
-                <Loading />
+                <div className="col-12" style={{ padding: '60px' }}>
+                    <FontAwesomeIcon className="fa-7x" icon={faCake} />
+
+                </div>
             </div>
         )
     }

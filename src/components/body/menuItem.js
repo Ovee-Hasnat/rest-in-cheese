@@ -14,7 +14,7 @@ const MenuItem = (props) => {
                     <CardImg
                         width="100%"
                         alt={props.dish.name}
-                        src={props.dish.image}
+                        src={baseURL + props.dish.image}
                         style={{ opacity: '0.5' }}
                     />
                     <CardImgOverlay>

@@ -4,7 +4,8 @@ import MenuItem from "./menuItem";
 import DishDetail from "./DishDetails";
 import { Button, CardColumns, Modal, ModalBody, ModalFooter } from "reactstrap";
 import { connect } from 'react-redux';
-import { addComment } from "../../redux/actionCreators";
+import { addComment, fetchDishes, fetchComments } from "../../redux/actionCreators";
+import Loading from "./loading";
 
 const mapStateToProps = state => {
     return {
@@ -15,7 +16,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addcomment: (dishId, author, comment) => dispatch(addComment(dishId, author, comment))
+        addcomment: (dishId, author, comment) => dispatch(addComment(dishId, author, comment)),
+        fetchDishes: () => dispatch(fetchDishes()),
+        fetchComments: () => dispatch(fetchComments())
     }
 }
 
@@ -42,46 +45,59 @@ class Menu extends Component {
         })
     }
 
+    componentDidMount() {
+        this.props.fetchDishes();
+        this.props.fetchComments();
+    }
+
     render() {
         document.title = "RIC . Menu"
-        const menu = this.props.dishes.map(item => {
+
+        if (this.props.dishes.isLoading) {
             return (
-                <MenuItem
-                    dish={item}
-                    key={item.id}
-                    onDishSelect={() => this.onDishSelect(item)}
-                />
+                <Loading />
             )
-        });
+        }
+        else {
+            const menu = this.props.dishes.dishes.map(item => {
+                return (
+                    <MenuItem
+                        dish={item}
+                        key={item.id}
+                        onDishSelect={() => this.onDishSelect(item)}
+                    />
+                )
+            });
 
-        let dishDetail = null;
-        if (this.state.selectedDish != null) {
-            const comments = this.props.comments.filter(comment => {
-                return comment.dishId === this.state.selectedDish.id;
-            })
-            dishDetail = <DishDetail dish={this.state.selectedDish} comments={comments}
-                addComment={this.props.addcomment} />
-        };
+            let dishDetail = null;
+            if (this.state.selectedDish != null) {
+                const comments = this.props.comments.comments.filter(comment => {
+                    return comment.dishId === this.state.selectedDish.id;
+                })
+                dishDetail = <DishDetail dish={this.state.selectedDish} comments={comments}
+                    addComment={this.props.addcomment} commentIsLoading={this.props.comments.isLoading} />
+            };
 
-        return (
-            <div className="container">
-                <div className="row">
-                    <CardColumns>
-                        {menu}
-                    </CardColumns>
-                    <Modal isOpen={this.state.modalOpen}>
-                        <ModalBody>
-                            {dishDetail}
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="danger" onClick={this.toggleModal}>
-                                Close
-                            </Button>
-                        </ModalFooter>
-                    </Modal>
+            return (
+                <div className="container">
+                    <div className="row">
+                        <CardColumns>
+                            {menu}
+                        </CardColumns>
+                        <Modal isOpen={this.state.modalOpen}>
+                            <ModalBody>
+                                {dishDetail}
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="danger" onClick={this.toggleModal}>
+                                    Close
+                                </Button>
+                            </ModalFooter>
+                        </Modal>
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        }
     }
 }
 
