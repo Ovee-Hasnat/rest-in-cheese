@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardImg, CardBody, CardTitle, CardText } from "reactstrap";
 import LoadComments from "./loadComments";
 import CommentForm from "./commentForm";
-
+import { baseURL } from "../../redux/baseURL";
 const DishDetail = props => {
     //console.log(props);
     return (
@@ -23,7 +23,7 @@ const DishDetail = props => {
                     <hr />
                     <LoadComments comments={props.comments} />
                     <hr />
-                    <CommentForm dishId={props.dish.id}/>
+                    <CommentForm dishId={props.dish.id} addComment={props.addComment} />
                 </CardBody>
             </Card>
         </div>
