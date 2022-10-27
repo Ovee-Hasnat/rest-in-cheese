@@ -1,6 +1,9 @@
 import React, { Component } from "react";
-import { Button, FormGroup, Label, Col } from 'reactstrap';
+import { Button, FormGroup, Label, Col, Alert } from 'reactstrap';
 import { LocalForm, Control, Errors } from 'react-redux-form';
+import axios from "axios";
+import { baseURL } from "../../redux/baseURL";
+import { faSleigh } from "@fortawesome/free-solid-svg-icons";
 
 
 const required = val => val && val.length;
@@ -10,9 +13,43 @@ const validEmail = val => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[
 
 
 class Contact extends Component {
+    state = {
+        alertShow: false,
+        alertText: null,
+        alertType: null,
+    }
 
     handleSubmit = values => {
-        console.log(values);
+        //console.log(values);
+        axios.post(baseURL + "Feedback", values)
+            .then(response => response.status)
+            .then(status => {
+                if (status === 201) {
+                    this.setState({
+                        alertShow: true,
+                        alertText: "Submitted Successfully",
+                        alertType: "success",
+                    });
+                    setTimeout(() => {
+                        this.setState({
+                            alertShow: false,
+                        })
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                //console.log(error);
+                this.setState({
+                    alertShow: true,
+                    alertText: error.message,
+                    alertType: "danger",
+                })
+                setTimeout(() => {
+                    this.setState({
+                        alertShow: false,
+                    })
+                }, 2000);
+            })
     }
 
     render() {
@@ -22,6 +59,9 @@ class Contact extends Component {
                 <div className="row row-content" style={{ paddindLeft: "20px", textAlign: "left", margin: '20px 0' }}>
                     <div className="col-12">
                         <h3>Send us your feedback</h3>
+                        <Alert isOpen={this.state.alertShow} color={this.state.alertType}>
+                            {this.state.alertText}
+                        </Alert>
                     </div>
                     <div className="col-12 col-md-9">
                         <LocalForm onSubmit={values => this.handleSubmit(values)} style={{ margin: '20px 0' }}>
